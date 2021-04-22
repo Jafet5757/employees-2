@@ -6,7 +6,7 @@ const Parser = require("body-parser").urlencoded({ extended: false });
 const model = require('./model/routes');
 
 
-app.set("host", process.env.PORT || 3000);
+app.set("host", process.env.PORT || 4000);
 app.set("view engine", "ejs");
 app.engine("html", require("ejs").renderFile);
 app.set("views", path.join(__dirname, "views"));

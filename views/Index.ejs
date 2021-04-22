@@ -15,6 +15,9 @@
                         <li class="nav-item">
                           <a class="nav-link cDept" href="#" id="">Departamentos</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link ctable" href="#">Tabla de empleados</a>
+                        </li>
                       </ul>
                     </div>
 
@@ -90,6 +93,7 @@
                         <div class="form-row">
                             <div class="form-group col-md">
                                 <input type="button" value="Registrar empleado" class="btn btn-warning" id="registerEmployee" onclick="saveNewEmployee()">
+                                <input type="button" value="Update employee" class="btn btn-success" id="updateEmployee">
                             </div>
                         </div>
                     </form>
@@ -129,47 +133,52 @@
                             <div class="form-group col-md-6">
                               <input type="button" value="Eliminar departamento" class="btn btn-danger mt-4" id="deleteDepartament" onclick="deleteDepartamentById()">
                             </div>
-                          </div>
+                        </div>
                       </form>
+                  </div>
+
+                  <!--Tabla de datos-->
+                  <div class="card-body" id="cardTableDepartaments">
+                      <div id="alertTable"></div>
+                      <div class="form-inline">
+                        <input type="button" class="btn btn-danger d-block my-2" value="Eliminar" id="btnDeleteTab" disabled onclick="deleteEmployee()">
+                        <input type="button" class="btn btn-success d-block my-2 mx-3" id="btnUpdateTab" value="Editar" onclick="changeView()" disabled>
+                        <input type="hidden" id="idEmpDelete">
+                      </div>
+                    <table class="table table-hover" id="tableEmployees">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Handle</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">3</th>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>@twitter</td>
+                          </tr>
+                        </tbody>
+                    </table>
                   </div>
                 </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="container my-5">
-        <div class="card">
-            <table class="table" id="tableEmployees">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                  </tr>
-                </tbody>
-              </table>
         </div>
     </div>
 

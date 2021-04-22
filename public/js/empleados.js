@@ -1,4 +1,5 @@
 getEmployees();
+$('#updateEmployee').hide();
 
 function saveNewEmployee(){
     const data = prepareDataEmployees();
@@ -84,31 +85,29 @@ function showEmployees(data){
     console.log('employees? '+employees);
     let code = `<thead>
                     <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">First name</th>
-                    <th scope="col">Last name</th>
-                    <th scope="col">Birthday</th>
-                    <th scope="col">Gender</th>
-                    <th scope="col">Hire date</th>
-                    <th scope="col">Departament</th>
-                    <th scope="col">Salary</th>
-                    <th scope="col">Title</th>
-                    <th scope="col"></th>
+                    <th scope="col">emp_no</th>
+                    <th scope="col">Nacimiento</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Genero</th>
+                    <th scope="col">Contratación</th>
+                    <th scope="col">Departamento</th>
+                    <th scope="col">Salario</th>
+                    <th scope="col">Titulo</th>
                     </tr>
                 </thead>
                 <tbody>`;
     employees.forEach((employee, i)=>{
-        code += `<tr class="hand">
-                    <th scope="row" onclick="prepareEmployeeEdit('`+employee.emp_no+`')">`+employee.emp_no+`</th>
-                    <td onclick="prepareEmployeeEdit('`+employee.emp_no+`')">`+employee.first_name+`</td>
-                    <td onclick="prepareEmployeeEdit('`+employee.emp_no+`')">`+employee.last_name+`</td>
-                    <td onclick="prepareEmployeeEdit('`+employee.emp_no+`')">`+transformDateFormat(employee.birth_date)+`</td>
-                    <td onclick="prepareEmployeeEdit('`+employee.emp_no+`')">`+employee.gender+`</td>
-                    <td onclick="prepareEmployeeEdit('`+employee.emp_no+`')">`+transformDateFormat(employee.hire_date)+`</td>
-                    <td onclick="prepareEmployeeEdit('`+employee.emp_no+`')">`+getDepartamentById(dept,empDepts[i].dept_no)+`</td>
-                    <td onclick="prepareEmployeeEdit('`+employee.emp_no+`')">`+salaries[i].salary+`</td>
-                    <td onclick="prepareEmployeeEdit('`+employee.emp_no+`')">`+titles[i].title+`</td>
-                    <td><input type="button" class="btn btn-danger btn-sm" value="Eliminar" onclick="deleteEmployee('`+employee.emp_no+`')"></td>
+        code += `<tr class="hand" id="`+employee.emp_no+`">
+                    <th scope="row" onclick="prepareEmployeeDelete('`+employee.emp_no+`')">`+employee.emp_no+`</th>
+                    <td onclick="prepareEmployeeDelete('`+employee.emp_no+`')">`+employee.first_name+`</td>
+                    <td onclick="prepareEmployeeDelete('`+employee.emp_no+`')">`+employee.last_name+`</td>
+                    <td onclick="prepareEmployeeDelete('`+employee.emp_no+`')">`+transformDateFormat(employee.birth_date)+`</td>
+                    <td onclick="prepareEmployeeDelete('`+employee.emp_no+`')">`+employee.gender+`</td>
+                    <td onclick="prepareEmployeeDelete('`+employee.emp_no+`')">`+transformDateFormat(employee.hire_date)+`</td>
+                    <td onclick="prepareEmployeeDelete('`+employee.emp_no+`')">`+getDepartamentById(dept,empDepts[i].dept_no)+`</td>
+                    <td onclick="prepareEmployeeDelete('`+employee.emp_no+`')">`+salaries[i].salary+`</td>
+                    <td onclick="prepareEmployeeDelete('`+employee.emp_no+`')">`+titles[i].title+`</td>
                 </tr>`;
     });
     code += '</tbody>';
@@ -148,7 +147,8 @@ function getDepartamentById(depts, empDeptId){
     }
 }
 
-function deleteEmployee(idEmp){
+function deleteEmployee(){
+    let idEmp = document.getElementById('idEmpDelete').value;
     $.ajax({
         url:'/deleteEmployee',
         type:'post',
@@ -158,7 +158,85 @@ function deleteEmployee(idEmp){
             if(response=='good'){
                 getEmployees();
                 cleanInputsEmployees();
-                popUpEmp('Se eliminó con exito', 'success');
+                popUpTab('Se eliminó con exito', 'success');
+            }else{
+                popUpTab('Ha ocurrido un error', 'danger');
+            }
+        },
+        error:function(response){
+            console.log(response);
+            popUpTab('Ha ocurrido un error', 'danger');
+        }
+    });
+}
+
+function prepareEmployeeDelete(idEmp){
+    document.getElementById('btnDeleteTab').disabled = false;
+    document.getElementById('btnUpdateTab').disabled = false;
+    document.getElementById('idEmpDelete').value = idEmp;
+}
+
+function changeView(){
+    $('.cDept').removeClass('active');
+    $('.ctable').removeClass('active');
+    $('.cEmp').addClass('active');
+    $('#cardEmployees').show();
+    $('#cardTableDepartaments').hide();
+    $('#cardDepartaments').hide();
+    idEmp = document.getElementById('idEmpDelete').value;
+    prepareEmployeeEdit(idEmp);
+}
+
+function prepareEmployeeEdit(idEmp){
+    $.ajax({
+        url:'/getEmployee',
+        type:'post',
+        data:{idEmp:idEmp},
+        success:function(data){
+            console.log('bien: '+data);
+            showDataEmpoyeeEdit(data);
+        },
+        error:function(err){
+            console.log('error: '+err);
+        }
+    });
+}
+
+function showDataEmpoyeeEdit(data){
+    document.getElementById('empNum').value = data.employeeData[0].emp_no;
+    document.getElementById('birthday').value = transformDateFormat(data.employeeData[0].birth_date);
+    document.getElementById('name').value = data.employeeData[0].first_name;
+    document.getElementById('las').value = data.employeeData[0].last_name;
+    document.getElementById('from').value = transformDateFormat(data.salaryData[0].from_date);
+    document.getElementById('to').value = transformDateFormat(data.salaryData[0].to_date);
+    document.getElementById('sala').value= data.salaryData[0].salary;
+    document.getElementById('title').value=data.titleData[0].title;
+    document.getElementById(data.deptData[0].dept_no).selected = true;
+    document.getElementById(data.employeeData[0].gender).selected = true;
+    console.log('manager? '+data.managerData[0].emp_no);
+    if(data.managerData[0].emp_no){
+        document.getElementById('manager').checked = true;
+    }else{
+        document.getElementById('manager').checked = false;
+    }
+    $('#registerEmployee').hide();
+    $('#updateEmployee').show();
+}
+
+$('#updateEmployee').click(function(){
+    const data = prepareDataEmployees();
+    $.ajax({
+        url:'/updateEmployee',
+        type:'post',
+        data:data,
+        success:function(response){
+            console.log(response);
+            if(response=='good'){
+                $('#updateEmployee').hide();
+                $('#registerEmployee').show();
+                getEmployees();
+                cleanInputsEmployees();
+                popUpEmp('Se actualizó con exito', 'success');
             }else{
                 popUpEmp('Ha ocurrido un error', 'danger');
             }
@@ -168,4 +246,4 @@ function deleteEmployee(idEmp){
             popUpEmp('Ha ocurrido un error', 'danger');
         }
     });
-}
+});
