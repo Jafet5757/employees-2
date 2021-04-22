@@ -1,0 +1,180 @@
+<%- include('partials/_header'); %>
+
+    <%- include('partials/_nav'); %>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md">
+                <div class="card text-center">
+                    <!--Esto es el div que lleva todos los forms-->
+                    <div class="card-header">
+                      <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                          <a class="nav-link active cEmp" href="#" id="">Empleados</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link cDept" href="#" id="">Departamentos</a>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <!--Esto es del empleado-->
+                    <div class="card-body" id="cardEmployees">
+                        <div id="alertEmployees">
+
+                        </div>
+                      <form>
+                        <div class="form-row">
+                          <div class="form-group col-md-6">
+                            <label for="empNum">Numero de empleado</label>
+                            <input type="number" class="form-control" id="empNum" name="employeesNumber">
+                          </div>
+                          <div class="form-group col-md-6">
+                            <label for="title">Titulo</label>
+                            <input type="text" id="title" name="title" class="form-control">
+                          </div>  
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="name">Primer nombre</label>
+                                <input type="text" id="name" class="form-control" name="name">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="las">Apellido</label>
+                                <input type="text" id="las" class="form-control" name="last">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-6">
+                            <label for="from">Fecha de inicio</label>
+                            <input type="date" id="from" class="form-control" name="fromDate">
+                          </div>
+                          <div class="form-group col-md-6">
+                            <label for="to">Fecha de fin</label>
+                            <input type="date" id="to" class="form-control" name="toDate">
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-6">
+                            <label for="sala">Salario</label>
+                            <input type="number" id="sala" class="form-control" name="salary">
+                          </div>
+                          <div class="form-group col-md-6">
+                            <label for="birthday">Cumpleaños</label>
+                            <input type="date" id="birthday" class="form-control" name="birthday">
+                        </div> 
+                        </div>
+                        <div class="form-row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label>Departamento</label>
+                              <select class="form-control" id="selectEmployee">
+                                <option>Some</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group col-md-6">
+                            <label for="gender">Genero</label>
+                            <select id="gender" class="form-control">
+                                <option id="M">M</option>
+                                <option id="F">F</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-row pl-1">
+                          <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="manager" value="yes">
+                            <label class="form-check-label" for="manager" id="labelManager">Manager</label>
+                          </div>
+                        </div>  
+                        <div class="form-row">
+                            <div class="form-group col-md">
+                                <input type="button" value="Registrar empleado" class="btn btn-warning" id="registerEmployee" onclick="saveNewEmployee()">
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                  </div>
+
+                  <!--Esto es del departamento-->
+                  <div class="card-body" id="cardDepartaments">
+                    <form class="col">
+                        
+                        <div id="alertDepartaments">
+          
+                        </div>
+                        <div class="form-row">
+                            <div class="form-gruop col-md-6">
+                                <label for="id">Identificador</label>
+                                <input type="text" class="form-control" id="idDept">
+                            </div>
+                          <div class="form-group col-md-6">
+                            <label for="dept">Nombre del departamento</label>
+                            <input type="text" class="form-control" name="departament" id="dept">
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-6">
+                            <input type="button" value="Agregar nuevo departamento" class="btn btn-warning mt-4" id="saveDepartament" onclick="saveNewDept()">
+                          </div>
+                        </div>
+
+                        <div class="form-row mt-5">
+                            <div class="form-group col-md-6">
+                                <label>Identificador</label>
+                                <input type="text" class="form-control" id="idDeptDelete">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                              <input type="button" value="Eliminar departamento" class="btn btn-danger mt-4" id="deleteDepartament" onclick="deleteDepartamentById()">
+                            </div>
+                          </div>
+                      </form>
+                  </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="card">
+            <table class="table" id="tableEmployees">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Handle</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+
+    <script src="public/js/general.js"></script>
+    <script src="public/js/departamentos.js"></script>
+    <script src="public/js/empleados.js"></script>
+
+<%- include('partials/_footer'); %>
